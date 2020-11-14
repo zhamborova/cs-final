@@ -3,13 +3,14 @@ var router = express.Router();
 const NewsAPI = require('newsapi');
 const newsapi = new NewsAPI('5f1246674c184e60bb9e88f19186b8b3');
 
-
+new Date().getDate()
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  let date = new Date();
   newsapi.v2.everything({
     q: 'environment',
-    from: '2020-10-10',
+    from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay() - 15}`,
     language: 'en',
     sortBy: 'relevancy',
   }).then(response => {

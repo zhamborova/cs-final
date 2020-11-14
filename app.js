@@ -12,7 +12,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 8081);
 
 app.use(logger('dev'));
 app.use(express.json());
