@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/news');
-var eventRouter = require('./routes/event');
+var eventsRouter = require('./routes/events');
 var app = express();
 
 // view engine setup
@@ -27,7 +27,7 @@ app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/news', usersRouter);
-app.use('/events', eventRouter)
+app.use('/events', eventsRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
