@@ -30,8 +30,6 @@ const events = {
     }]
 }
 
-
-
 /* GET event listings. */
 router.get('/', function(req, res, next) {
     res.send(JSON.stringify(events));
