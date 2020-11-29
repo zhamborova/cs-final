@@ -46,4 +46,10 @@ router.get('/:userId', function(req, res) {
 	return res.send(user)
 });
 
+// find all users
+router.get('/all', function(req, res) {
+	console.log('FINDING ALL USERS')
+	res.send(userService.findAllUsers())
+});
+
 module.exports = router;
