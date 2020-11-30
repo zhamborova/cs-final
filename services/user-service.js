@@ -11,6 +11,10 @@
 // var users = db.ref("users");
 // console.log(users)
 
+
+// require('../assets/backend')
+const firebase = require('../firebase/user-db')
+
 // const findUserById = (userId) => {
 const findUserById = (obj, res) => {
     // console.log(userId)

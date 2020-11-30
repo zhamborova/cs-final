@@ -2,9 +2,14 @@ let init = require("../data/users.js");
 var express = require('express');
 var router = express.Router();
 
-const userService = require("../services/user-service")
-
+const userService = require('../services/user-service')
 var users = init.users
+
+// testing communication with the database
+// const userService = require("../firebase/user-db")
+// userService.createUserWithId("890", {first_name: 'Michelle2'})
+// console.log("getting by id")
+// userService.getUserById(890)
 
 /* GET users. */
 router.get('/', function(req, res) {
@@ -49,7 +54,8 @@ router.get('/:userId', function(req, res) {
 // find all users
 router.get('/all', function(req, res) {
 	console.log('FINDING ALL USERS')
-	res.send(userService.findAllUsers())
+	const users = userService.findAllUsers()
+	res.send(users)
 });
 
 module.exports = router;
