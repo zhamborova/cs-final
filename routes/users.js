@@ -1,8 +1,10 @@
 let init = require("../data/users.js");
+let userList = require("../data/userList.js")
 var express = require('express');
 var router = express.Router();
 
 const userService = require('../services/user-service')
+var user_list = userList.user_list
 var users = init.users
 
 // testing communication with the database
@@ -46,16 +48,24 @@ router.post('/login', function(req, res) {
 
 // find user by Id
 router.get('/:userId', function(req, res) {
-	const user = userService.findUserById(req.params['userId'])
-	console.log('FINDING USER BY ID')
-	return res.send(user)
+	// const user = userService.findUserById(req.params['userId'])
+	// console.log('FINDING USER BY ID')
+	// return res.send(user)
+	res.send(user_list.find(user => req.body.id === user.id))
 });
 
 // find all users
 router.get('/all', function(req, res) {
-	console.log('FINDING ALL USERS')
-	const users = userService.findAllUsers()
-	res.send(users)
+	// console.log('FINDING ALL USERS')
+	// const users = userService.findAllUsers()
+	// res.send(users)
+	res.send(user_list)
+});
+
+// update user
+router.put('/:userId', function(req, res) {
+
+	res.send(user_list.filter(user => user.id === req.body.id? req.body : user))
 });
 
 module.exports = router;

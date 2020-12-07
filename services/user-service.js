@@ -1,4 +1,4 @@
-// const users = require('../data/users.json')
+const users = require('../data/users.json')
 
 // const admin = require("firebase-admin");
 // var serviceAccount = require("../web-dev-db-firebase-adminsdk-x91jw-42b9658cb1.json");
@@ -30,6 +30,10 @@ const findAllUsers = (res) =>
     users.once('value',function(snap){
         res.status(200).json({"users":snap.val()});
     })
+
+const updateUser = (res) => {
+
+}
 
 module.exports = {
     findUserById: findUserById,
