@@ -22,18 +22,21 @@ router.post('/login', function(req, res) {
 	//Verify user and send back that user as JSON
 	if (users.filter(user => user.email === req.body.email).length !== 0) {
 		console.log("User was found.")
+
 		if (users.filter(user => user.email === req.body.email)[0].password === req.body.password) {
 			console.log("Success.")
 			let user = users.filter(user => user.email === req.body.email)[0]
+			user["loginStatus"] = "success"
 			res.send(JSON.stringify(user))
+			console.log("Here is the sent user: " + user)
 		} else {
 			console.log("Pass didn't match")
-			res.send(JSON.stringify({"firstName": "none"}))
+			res.send(JSON.stringify({"firstName": "none", "loginStatus": "unsuccessful"}))
 		}
 
 	} else {
 		console.log("No such user was found")
-		res.send(JSON.stringify({"firstName": "none"}))
+		res.send(JSON.stringify({"firstName": "none", "loginStatus": "unsuccessful"}))
 	}
 })
 
