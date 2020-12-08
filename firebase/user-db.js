@@ -22,13 +22,18 @@ const updateList = (db) => {
     users = db
 }
 
-const getAllUsers = () => {
-    db.ref('users').on('value', snapshot => snapshot.val())
+const getAllUsers = () =>
+    db.ref('users').once('value')
+        .then(snapshot => snapshot.val())
+    // db.ref('users').on('value', snapshot => snapshot.val())
 
-}
 
 const createUser = (user) => {
-    return db.ref('users').push(user)
+    // adds new user to list of users
+    db.ref('users').push(user)
+    // returns the NEW list of users
+    return db.ref('users').once('value')
+        .then(snapshot => snapshot.val())
 }
 
 const createUserWithId = (id, user) => {
@@ -37,15 +42,20 @@ const createUserWithId = (id, user) => {
 }
 
 const updateUser = (userId, user) => {
-    return db.ref('users' + userId).set({user})
+    // return db.ref('users' + userId).set({user})
+    db.ref('users/').child(userId).set(user)
+        .then(user => user)
+    // return db.ref('users').child(userId).once('value')
+    //     .then(snapshot => snapshot.val())
 }
 
 const deleteUser = (userId) => {
-    return db.ref('user').child('userId').remove()
+    return db.ref('users').child(userId).set(null)
 }
 
 const getUserById = (userId) => {
-    return db.ref('users').child(userId).on('value', snapshot => console.log(snapshot.val()))
+    return db.ref('users').child(userId).once('value')
+        .then(snapshot => snapshot.val())
     // return db.ref('/users/' + userId).on('value', snapshot => snapshot.val())
 }
 

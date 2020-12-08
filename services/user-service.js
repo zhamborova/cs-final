@@ -1,19 +1,19 @@
-const users = require('../data/users.json')
+// const users = require('../data/users.json')
 
-// const admin = require("firebase-admin");
-// var serviceAccount = require("../web-dev-db-firebase-adminsdk-x91jw-42b9658cb1.json");
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-//     databaseURL: "https://web-dev-db.firebaseio.com",
-//     authDomain: "web-dev-db.firebaseapp.com",
-// });
-// var db = admin.database();
-// var users = db.ref("users");
-// console.log(users)
+const admin = require("firebase-admin");
+var serviceAccount = require("../web-dev-db-firebase-adminsdk-x91jw-42b9658cb1.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://web-dev-db.firebaseio.com",
+    authDomain: "web-dev-db.firebaseapp.com",
+});
+var db = admin.database();
+var users = db.ref("users/");
+console.log(users)
 
 
 // require('../assets/backend')
-const firebase = require('../firebase/user-db')
+// const firebase = require('../firebase/user-db')
 
 // const findUserById = (userId) => {
 const findUserById = (obj, res) => {
@@ -26,10 +26,13 @@ const findUserById = (obj, res) => {
 }
 
 const findAllUsers = (res) =>
+    users.once('value')
+        .then(snapshot => snapshot.val())
     // users
-    users.once('value',function(snap){
-        res.status(200).json({"users":snap.val()});
-    })
+    // users.once('value',function(snap){
+    //     res.status(200).json({"users":snap.val()});
+    // })
+
 
 const updateUser = (res) => {
 
