@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   let date = new Date();
   newsapi.v2.everything({
     q: 'environment',
-    from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay() - 15}`,
+    from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay() - 10}`,
     language: 'en',
     sortBy: 'relevancy',
   }).then(response => {

@@ -6,7 +6,6 @@ var logger = require('morgan');
 var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/news');
-var eventRouter = require('./routes/event');
 var eventsRouter = require('./routes/events');
 var registeredUsersRouter = require('./routes/users')
 var app = express();
@@ -27,7 +26,6 @@ app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/news', usersRouter);
-app.use('/events', eventRouter);
 app.use('/events', eventsRouter);
 app.use('/users', registeredUsersRouter)
 

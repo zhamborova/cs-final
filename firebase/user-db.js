@@ -1,51 +1,73 @@
 firebase = require('./firebase')
-var db = firebase.db
+const db = firebase.db
 
 
 const getAllUsers = () =>
-    db.ref('users').once('value')
-        .then(snapshot => snapshot.val())
-    // db.ref('users').on('value', snapshot => snapshot.val())
+    db.collection('users').get().then(snapshot=>
+        snapshot.docs.map(doc => ({...doc.data(), id:doc.id})))
 
 
-const createUser = (user) => {
-    // adds new user to list of users
-    db.ref('users').push(user)
-    // returns the NEW list of users
-    return db.ref('users').once('value')
-        .then(snapshot => snapshot.val())
+const createUser = async (user) => {
+    db.collection("users").add({...user})
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+            return docRef;
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
 }
 
-const createUserWithId = (id, user) => {
-    return db.ref('users').child(id).set(user)
-        .then(user => user)
-}
 
-const updateUser = (userId, user) => {
-    // return db.ref('users' + userId).set({user})
-    db.ref('users/').child(userId).set(user)
-        .then(user => user)
-    // return db.ref('users').child(userId).once('value')
-    //     .then(snapshot => snapshot.val())
-}
+const updateUser = (userId, user) =>
+   db.collection('users').doc(userId).update({...user}).then(function() {
+      console.log("Document successfully updated!",);
+      return getUserById(userId)
+    }).catch(function(error) {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", error);
+      });
+
+
 
 const deleteUser = (userId) => {
-    return db.ref('users').child(userId).set(null)
+    db.collection("users").doc(userId).delete().then(function() {
+        console.log("Document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing document: ", error);
+    });
 }
+
+
 
 const getUserById = (userId) => {
-    return db.ref('users').child(userId).once('value')
-        .then(snapshot => snapshot.val())
-    // return db.ref('/users/' + userId).on('value', snapshot => snapshot.val())
-}
+    return db.collection('users').doc(userId)
+        .get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                return {...doc.data(), id:userId}
+            } else {
+                console.log("No such document!");
+            }
+})}
 
 
+
+///ADD WHERE QUERY
+const authenticate = (email, password) =>
+       db.collection("users").where("email", "==", email)
+           .where("password","==", password).get()
+           .then(snapshot=> ({...snapshot.docs[0].data(), id:snapshot.docs[0].id}))
+           .catch(err => {message:"no user found"})
+
+
+authenticate("yasmi.z@gmail.com", "123")
 
 module.exports = {
-    getAllUsers: getAllUsers,
-    createUser: createUser,
-    createUserWithId: createUserWithId,
-    updateUser: updateUser,
-    deleteUser: deleteUser,
-    getUserById: getUserById
+    getAllUsers,
+    createUser,
+    updateUser,
+    deleteUser,
+    getUserById,
+    authenticate
 }
