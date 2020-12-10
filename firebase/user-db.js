@@ -8,10 +8,10 @@ const getAllUsers = () =>
 
 
 const createUser = async (user) => {
-    db.collection("users").add({...user})
+   return db.collection("users").add({...user})
         .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
-            return docRef;
+            let user = getUserById(docRef.id).then(user => user)
+            return user
         })
         .catch(function(error) {
             console.error("Error adding document: ", error);
@@ -41,10 +41,9 @@ const deleteUser = (userId) => {
 
 
 const getUserById = (userId) => {
-    return db.collection('users').doc(userId)
-        .get().then(function(doc) {
+    return db.collection('users').doc(userId).get()
+        .then(function(doc) {
             if (doc.exists) {
-                console.log("Document data:", doc.data());
                 return {...doc.data(), id:userId}
             } else {
                 console.log("No such document!");
@@ -53,7 +52,7 @@ const getUserById = (userId) => {
 
 
 
-///ADD WHERE QUERY
+
 const authenticate = (email, password) =>
        db.collection("users").where("email", "==", email)
            .where("password","==", password).get()
@@ -61,7 +60,6 @@ const authenticate = (email, password) =>
            .catch(err => {message:"no user found"})
 
 
-authenticate("yasmi.z@gmail.com", "123")
 
 module.exports = {
     getAllUsers,
@@ -69,5 +67,6 @@ module.exports = {
     updateUser,
     deleteUser,
     getUserById,
-    authenticate
+    authenticate,
+
 }
