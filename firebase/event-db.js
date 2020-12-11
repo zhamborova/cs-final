@@ -25,15 +25,15 @@ const createEvent = async (event) => {
         });
 }
 
-const updateEvent = async (eventId, event) =>
-   db.collection('events').doc(eventId).update({...event})
-       .then(function() {
-        let event = getEventById(eventId).then(e => e)
-        return event
-    }).catch(function(error) {
+const updateEvent = async (eventId, event) => {
+   return db.collection('events').doc(eventId).update({...event})
+        .then(function () {
+            let event = getEventById(eventId).then(e => e)
+           return event;
+        }).catch(function (error) {
         console.error("Error updating document: ", error);
     });
-
+}
 
 const getEventById = (eventId) => {
     return db.collection('events').doc(eventId)
@@ -50,12 +50,9 @@ const getEventsForUser = async (userId) => {
     let arr = await  db.collection("events")
         .where("participants", "array-contains", userId).get()
         .then(snapshot => snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))
-   let arr2 = await  db.collection("events")
-        .where("host_id", "==", userId).get()
-        .then(snapshot => snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))
 
 
-    return [...arr, ...arr2];
+    return arr;
 }
 
 
