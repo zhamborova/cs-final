@@ -10,8 +10,7 @@ const getAllUsers = () =>
 const createUser = async (user) => {
    return db.collection("users").add({...user})
         .then(function(docRef) {
-            let user = getUserById(docRef.id).then(user => user)
-            return user
+            return docRef.id
         })
         .catch(function(error) {
             console.error("Error adding document: ", error);
@@ -22,7 +21,7 @@ const createUser = async (user) => {
 const updateUser = (userId, user) =>
    db.collection('users').doc(userId).update({...user}).then(function() {
       console.log("Document successfully updated!",);
-      return getUserById(userId)
+      return getUserById(userId).then(u=>u)
     }).catch(function(error) {
           // The document probably doesn't exist.
           console.error("Error updating document: ", error);
