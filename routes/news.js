@@ -21,9 +21,10 @@ router.get('/', function(req, res, next) {
 
 /* GET users listing. */
 router.get('/:title', function(req, res, next) {
+
   newsapi.v2.everything({
     q: req.params.title,
-    from: '2020-10-10',
+    from: `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`,
     language: 'en',
     sortBy: 'relevancy',
   }).then(response => {

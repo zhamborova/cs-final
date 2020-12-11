@@ -28,7 +28,7 @@ router.get('/:userId/events', function(req, res) {
 router.post('/', function(req, res) {
 	userService.createUser(req.body)
 		.then(user => {
-			res.send(JSON.stringify(user));
+			res.send(user);
 		})
 })
 
@@ -47,6 +47,15 @@ router.get('/:userId', function(req, res) {
 			res.send(JSON.stringify(user))
 		})
 });
+
+//get user friends
+router.get('/:userId/friends', function(req, res) {
+	userService.getUserFriends(req.params['userId'])
+		.then(users => {
+			res.send(JSON.stringify(users))
+		})
+});
+
 
 // update user
 router.put('/:userId', function(req, res) {

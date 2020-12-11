@@ -10,7 +10,8 @@ const getAllUsers = () =>
 const createUser = async (user) => {
    return db.collection("users").add({...user})
         .then(function(docRef) {
-            return docRef.id
+            let user = getUserById(docRef.id).then(e => e)
+            return user
         })
         .catch(function(error) {
             console.error("Error adding document: ", error);
@@ -32,12 +33,18 @@ const updateUser = (userId, user) =>
 const deleteUser = (userId) => {
     db.collection("users").doc(userId).delete().then(function() {
         console.log("Document successfully deleted!");
+        return "success"
     }).catch(function(error) {
         console.error("Error removing document: ", error);
     });
 }
 
+const getUserFriends= async (userId) => {
 
+    let arr = await db.collection("users").where("friends", "array-contains", userId).get()
+    arr = arr.docs.map(doc => ({...doc.data(), id: doc.id}))
+    return arr;
+}
 
 const getUserById = (userId) => {
     return db.collection('users').doc(userId).get()
@@ -67,5 +74,6 @@ module.exports = {
     deleteUser,
     getUserById,
     authenticate,
+    getUserFriends
 
 }

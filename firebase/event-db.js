@@ -49,9 +49,7 @@ const getEventById = (eventId) => {
 const getEventsForUser = async (userId) => {
     let arr = await  db.collection("events")
         .where("participants", "array-contains", userId).get()
-        .then(snapshot => snapshot.docs.map(doc => ({...doc.data(), id: doc.id})))
-
-
+      arr = arr.docs.map(doc => ({...doc.data(), id: doc.id}))
     return arr;
 }
 
