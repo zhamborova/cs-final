@@ -4,6 +4,11 @@ var router = express.Router();
 
 var users = init.users
 
+var id_accum = 1
+
+
+
+
 /* GET users. */
 router.get('/', function(req, res) {
 	res.send(JSON.stringify(users));
@@ -11,7 +16,10 @@ router.get('/', function(req, res) {
 
 // Register User and send back all of the users
 router.post('/', function(req, res) {
-	users.push(req.body)
+	const newId = id_accum + 1
+	var newUser = req.body
+	newUser.id = newId
+	users.push(newUser)
 	res.send(JSON.stringify(users));
 	console.log("Here is the updated list of users:")
 	console.log(users)
