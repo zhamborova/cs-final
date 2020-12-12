@@ -7,6 +7,11 @@ const eventService = require("../firebase/event-db")
 
 
 
+var id_accum = 1
+
+
+
+
 /* GET users. */
 router.get('/', function(req, res) {
 	userService.getAllUsers()
@@ -26,10 +31,17 @@ router.get('/:userId/events', function(req, res) {
 
 // Register User and send back all of the users
 router.post('/', function(req, res) {
-	userService.createUser(req.body)
-		.then(user => {
-			res.send(user);
-		})
+	// userService.createUser(req.body)
+	// 	.then(user => {
+	// 		res.send(user);
+	// 	})
+	const newId = id_accum + 1
+	var newUser = req.body
+	newUser.id = newId
+	users.push(newUser)
+	res.send(JSON.stringify(users));
+	console.log("Here is the updated list of users:")
+	console.log(users)
 })
 
 // Login User
