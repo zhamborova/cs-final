@@ -63,7 +63,7 @@ const authenticate = (email, password) =>
        db.collection("users").where("email", "==", email)
            .where("password","==", password).get()
            .then(snapshot=> ({...snapshot.docs[0].data(), id:snapshot.docs[0].id}))
-           .catch(err => {message:"no user found"})
+           .catch(err => ({message:"no user found"}))
 
 
 
