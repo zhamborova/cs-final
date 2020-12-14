@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
     language: 'en',
     sortBy: 'relevancy',
   }).then(response => {
-    console.log(response);
+
     res.send(response);
   });
 });
@@ -18,14 +18,14 @@ router.get('/', function(req, res, next) {
 /* GET users listing. */
 router.get('/:title', function(req, res, next) {
   let date = new Date();
-  console.log(date)
+
   newsapi.v2.everything({
     q: req.params.title,
 
     language: 'en',
     sortBy: 'relevancy',
   }).then(response => {
-    console.log(response);
+
     res.send(response);
   });
 });

@@ -32,10 +32,9 @@ const updateUser = (userId, user) =>
 
 const deleteUser = (userId) => {
     db.collection("users").doc(userId).delete().then(function() {
-        console.log("Document successfully deleted!");
         return "success"
     }).catch(function(error) {
-        console.error("Error removing document: ", error);
+        return "failure"
     });
 }
 
@@ -51,8 +50,6 @@ const getUserById = (userId) => {
         .then(function(doc) {
             if (doc.exists) {
                 return {...doc.data(), id:userId}
-            } else {
-                console.log("No such document!");
             }
 })}
 
