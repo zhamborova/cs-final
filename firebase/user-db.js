@@ -41,10 +41,33 @@ const deleteUser = (userId) => {
 
 const getUserFriends= async (userId) => {
 
-    let arr = await db.collection("users").where("friends", "array-contains", userId).get()
-    arr = arr.docs.map(doc => ({...doc.data(), id: doc.id}))
-    return arr;
+    // let arr = await db.collection("users").where("friends", "array-contains", userId).get()
+    // arr = arr.docs.map(doc => ({...doc.data(), id: doc.id}))
+    // return arr;
+    console.log("GET USER FRIENDS CALLED")
+    return db.collection("users").doc(userId).get()
+        .then(snapshot => {
+            let friends = snapshot.data().friends
+            console.log(friends)
+            let arr = db.collection("users").where("id", "in", friends).get()
+                .then(fs => fs.docs.map(doc => ({...doc.data(), id: doc.id})))
+            console.log(arr)
+            // arr = arr.docs.map(doc => ({...doc.data(), id: doc.id}))
+            return arr
+            // for (let f = 0; f < friends.length; f++) {
+            //     let curr_id = friends[f]
+            //     db.collection("users").doc(curr_id).get()
+            //         .then(curr_friend => {
+            //             res.push(curr_friend.data())
+            //         })
+            // }
+        })
+
+
+
+
 }
+
 
 const getUserById = (userId) => {
     return db.collection('users').doc(userId).get()
